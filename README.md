@@ -48,4 +48,4 @@ surge token
 
 ---
 
-Autor: **Bryan Peguero Camilo**
+Autor: **Edwin De Los Santos** · Matrícula: `20251032`
