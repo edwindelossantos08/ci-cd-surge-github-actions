@@ -1,0 +1,6 @@
+# Archivos y carpetas que NO se suben al despliegue de Surge
+.git
+.github
+.gitignore
+README.md
+node_modules

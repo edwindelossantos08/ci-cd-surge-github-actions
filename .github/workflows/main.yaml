@@ -1,0 +1,40 @@
+# Workflow de Integración y Despliegue Continuo (CI/CD)
+# Despliega automáticamente la página estática a Surge.sh
+# cada vez que se hace push a la rama main.
+
+name: Deploy to Surge.sh
+
+# Disparador: se ejecuta en cada push a la rama main
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    # Sistema operativo en el que corre el job
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Clonar el repositorio en el runner
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # Paso 2: Configurar Node.js (necesario para instalar Surge)
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Paso 3: Instalar Surge.sh de forma global en el runner
+      - name: Instalar Surge.sh
+        run: npm install -g surge
+
+      # Paso 4: Desplegar el sitio estático a Surge
+      # Las credenciales se leen desde los secrets de GitHub
+      # para no exponer el token públicamente.
+      - name: Desplegar a Surge
+        run: surge ./ ${{ secrets.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+        env:
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
